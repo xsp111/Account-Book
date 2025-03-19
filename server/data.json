@@ -1,0 +1,123 @@
+{
+    "ka": [
+        {
+            "type": "pay",
+            "money": -99,
+            "date": "2025-1-2",
+            "userFor": "drinks",
+            "id": 1
+        },
+        {
+            "type": "pay",
+            "money": -50,
+            "date": "2025-01-03",
+            "userFor": "snacks",
+            "id": 2
+        },
+        {
+            "type": "income",
+            "money": 200,
+            "date": "2025-01-04",
+            "userFor": "salary",
+            "id": 3
+        },
+        {
+            "type": "pay",
+            "money": -30,
+            "date": "2025-01-05",
+            "userFor": "transport",
+            "id": 4
+        },
+        {
+            "type": "income",
+            "money": 150,
+            "date": "2025-01-06",
+            "userFor": "freelance",
+            "id": 5
+        },
+        {
+            "type": "pay",
+            "money": -120,
+            "date": "2025-01-07",
+            "userFor": "shopping",
+            "id": 6
+        },
+        {
+            "type": "pay",
+            "money": -75,
+            "date": "2025-01-08",
+            "userFor": "dinner",
+            "id": 7
+        },
+        {
+            "type": "income",
+            "money": 300,
+            "date": "2025-01-09",
+            "userFor": "bonus",
+            "id": 8
+        },
+        {
+            "type": "pay",
+            "money": -60,
+            "date": "2025-01-10",
+            "userFor": "groceries",
+            "id": 9
+        },
+        {
+            "type": "income",
+            "money": 400,
+            "date": "2025-01-11",
+            "userFor": "investment",
+            "id": 10
+        },
+        {
+            "type": "pay",
+            "money": -90,
+            "date": "2025-01-12",
+            "userFor": "entertainment",
+            "id": 11
+        },
+        {
+            "type": "pay",
+            "money": -45,
+            "date": "2025-01-13",
+            "userFor": "gym",
+            "id": 12
+        },
+        {
+            "type": "income",
+            "money": 500,
+            "date": "2025-01-14",
+            "userFor": "side hustle",
+            "id": 13
+        },
+        {
+            "type": "pay",
+            "money": -150,
+            "date": "2025-01-15",
+            "userFor": "travel",
+            "id": 14
+        },
+        {
+            "type": "pay",
+            "money": -200,
+            "date": "2025-01-16",
+            "userFor": "furniture",
+            "id": 15
+        },
+        {
+            "type": "income",
+            "money": 350,
+            "date": "2025-01-17",
+            "userFor": "gift",
+            "id": 16
+        },
+        {
+            "type": "pay",
+            "money": -80,
+            "date": "2025-01-18",
+            "userFor": "clothes",
+            "id": 17
+        }
+    ]
+}
