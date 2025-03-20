@@ -18,8 +18,7 @@ const billStore = createSlice({
 const getBillList = () => {
     return (
         async (dispatch) => {
-            console.log(3);
-            const res = await axios.get('http://localhost:8888/ka');
+            const res = await axios.get('http://localhost:8889/ka');
             dispatch(setBillList(res.data));
         }
     );

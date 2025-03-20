@@ -33,9 +33,7 @@ export default function Layout(){
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(1);
         dispatch(getBillList());
-        console.log(2);
     }, [dispatch]);
 
     function switchRoute(path){
