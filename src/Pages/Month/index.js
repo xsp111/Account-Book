@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import _ from "lodash";
+import DailyBill from "./components/DayBill";
 
 
 export default function Month(){
@@ -11,8 +12,15 @@ export default function Month(){
     const [dateVisible, setDateVisible] = useState(false);
     const [currentDate, setCurrentDate] = useState( dayjs(new Date()).format('YYYY | M') );
     const [monthList, setMonthList] = useState([]);
-    const monthGroup = useMemo(() => {
-        return _.groupBy(billList, item => dayjs(item.date).format('YYYY | M'));
+
+    // 将billList按月分组
+    const { monthGroup, firstMonth } = useMemo(() => {
+        const monthGroup =  _.groupBy(billList, item => dayjs(item.date).format('YYYY | M'));
+        const firstMonth =  Object.keys(_.groupBy(billList, item => dayjs(item.date).format('YYYY-M')))[0];
+        return {
+            monthGroup,
+            firstMonth
+        };
     }, [billList]);
 
     useEffect(() => {
@@ -21,6 +29,7 @@ export default function Month(){
         }
     }, [monthGroup]);
 
+    // 计算收支结余
     const monthResult = useMemo(() => {
         const pay = monthList.filter(item => item.type === 'pay').reduce((sum, item) => sum += item.money, 0);
         const income = monthList.filter(item => item.type === 'income').reduce((sum, item) => sum += item.money, 0);
@@ -31,12 +40,23 @@ export default function Month(){
         }
     }, [monthList]);
 
+    //切换月份
     function handleOnConfirm(date){
         const formatDate = dayjs(date).format('YYYY | M');
         setCurrentDate(formatDate);
         setMonthList(monthGroup[formatDate]);
         setDateVisible(false);
     }
+
+    // 将monthList按日分组，返回日期数组和对应的bill
+    const dayGroup = useMemo(() => {
+        const groupDay =  _.groupBy(monthList, item => dayjs(item.date).format('YYYY-MM-DD'));
+        const keys = Object.keys(groupDay);
+        return {
+            keys,
+            groupDay
+        };
+    }, [monthList]);
 
     return (
         <div className="monthlyBill">
@@ -74,11 +94,18 @@ export default function Month(){
                         precision="month"
                         visible={dateVisible}
                         max={new Date()}
-                        min={new Date('2025-1')}
+                        min={new Date(firstMonth)}
                         onClose={() => { setDateVisible(false); }}
                         onConfirm={handleOnConfirm}
                     />
                 </div>
+
+                {/* 单日列表统计 */}
+                {
+                    dayGroup.keys.map( item => {
+                        return <DailyBill key={item} date={item} billList={dayGroup.groupDay[item]} />
+                    })
+                }
             </div>
         </div>
     );
