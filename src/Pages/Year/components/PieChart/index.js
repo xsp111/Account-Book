@@ -18,8 +18,8 @@ function CategoryPieCharts ({ data }) {
 
   return (
     <>
-        <ResponsiveContainer width="50%" height="80%">
-          <PieChart>
+        <ResponsiveContainer width="50%" height="100%">
+          <PieChart >
             <Pie
               data={processData(data.pay)}
               cx="50%"
@@ -44,13 +44,17 @@ function CategoryPieCharts ({ data }) {
               layout="horizontal" 
               align="center" 
               verticalAlign="bottom"
-              wrapperStyle={{ paddingTop: 20 }}
+              wrapperStyle={{ 
+                height: 45,
+                paddingTop: 0, 
+                fontSize: 12
+              }}
             />
           </PieChart>
         </ResponsiveContainer>
 
-        <ResponsiveContainer width="50%" height="80%">
-          <PieChart>
+        <ResponsiveContainer width="50%" height="100%">
+          <PieChart >
             <Pie
               data={processData(data.income)}
               cx="50%"
@@ -75,7 +79,11 @@ function CategoryPieCharts ({ data }) {
               layout="horizontal" 
               align="center" 
               verticalAlign="bottom"
-              wrapperStyle={{ paddingTop: 20 }}
+              wrapperStyle={{
+                height: 45,
+                paddingTop: 0, 
+                fontSize: 12,
+              }}
             />
           </PieChart>
         </ResponsiveContainer>
