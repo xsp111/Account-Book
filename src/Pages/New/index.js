@@ -1,4 +1,4 @@
-import { Button, DatePicker, Input, NavBar } from 'antd-mobile';
+import { Button, DatePicker, Input, NavBar, Toast } from 'antd-mobile';
 import Icon from '@/components/Icon';
 import './index.scss';
 import { billListData } from '../Month/components/DayBill/billTypeTranform';
@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { addBillList } from '@/store/modules/billStore';
 import { useDispatch } from 'react-redux';
+import dayjs from 'dayjs';
 
 export default function New(){
     const dispatch = useDispatch();
+    const [visible, setVisible] = useState(false);
     const [bill, setBill] = useState({
         type: 'pay',
         money: 0,
@@ -21,15 +23,30 @@ export default function New(){
             ...bill,
             money: Number(bill.type === 'pay' ? -bill.money : bill.money)
         };
-        dispatch(addBillList(data));
-        alert('已 保 存')
+        if( data.money === 0 ){
+            Toast.show({
+                icon: 'fail',
+                content: '请填写金额 !',
+            });
+        }else if( data.useFor === '' ){
+            Toast.show({
+                icon: 'fail',
+                content: '请选择用途 !',
+            });
+        }else{
+            dispatch(addBillList(data));
+            Toast.show({
+                icon: 'success',
+                content: '保存成功',
+            })
+        }
     }
 
     const navigate = useNavigate();
     return (
         <div className="keepAccounts">
             <NavBar className="nav" onBack={() => navigate(-1)}>
-                记一笔
+                新增账单
             </NavBar>
 
             <div className="header">
@@ -52,13 +69,22 @@ export default function New(){
 
                 <div className="kaFormWrapper">
                 <div className="kaForm">
-                    <div className="date">
+                    <div 
+                        className="date"
+                        onClick={() => { setVisible(true); }}
+                    >
                     <Icon type="calendar" className="icon" />
-                    <span className="text">{'今天'}</span>
+                    <span className="text">{dayjs(bill.date).format('YYYY-MM-DD')}</span>
                     <DatePicker
                         className="kaDate"
                         title="记账日期"
                         max={new Date()}
+                        visible={visible}
+                        onCancel={() => { setVisible(false); }}
+                        onConfirm={ date => { 
+                            setBill({ ...bill, date}); 
+                            setVisible(false);
+                        }}
                     />
                     </div>
                     <div className="kaInput">

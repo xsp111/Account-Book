@@ -16,12 +16,14 @@ export default function Month(){
     // 将billList按月分组
     const { monthGroup, firstMonth } = useMemo(() => {
         const monthGroup =  _.groupBy(billList, item => dayjs(item.date).format('YYYY | M'));
-        const firstMonth =  Object.keys(_.groupBy(billList, item => dayjs(item.date).format('YYYY-M')))[0];
+        const Monthskey =  Object.keys(_.groupBy(billList, item => dayjs(item.date).format('YYYY-MM'))).sort();
+        const firstMonth = Monthskey[0];
         return {
             monthGroup,
             firstMonth
         };
     }, [billList]);
+
 
     useEffect(() => {
         if(monthGroup[dayjs().format('YYYY | M')]){

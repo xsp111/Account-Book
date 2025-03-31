@@ -47,7 +47,7 @@ export const billListData = {
     income: [
       {
         type: 'professional',
-        name: '其他支出',
+        name: '工作收入',
         list: [
           { type: 'salary', name: '工资' },
           { type: 'overtimepay', name: '加班' },
@@ -73,3 +73,21 @@ export const billListData = {
     })
     return prev
   }, {});
+
+  export const addTypeToBills = (bills) => {
+    return bills.map(bill => {
+      // 判断账单类型（income/pay）
+      const billType = bill.type === 'income' ? 'income' : 'pay';
+      
+      // 遍历对应类型的分类列表，找到父级分类
+      const parentCategory = billListData[billType].find(category => 
+        category.list.some(item => item.type === bill.useFor)
+      );
+  
+      // 返回添加父级分类后的账单对象
+      return {
+        ...bill,
+        categoryType: parentCategory ? parentCategory.type : '未分类'
+      };
+    });
+  };
