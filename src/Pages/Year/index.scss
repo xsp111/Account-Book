@@ -24,6 +24,7 @@
         padding: 0 10px;
         overflow-y: scroll;
         background-color: #f5f5f5;
+    
 
         .user {
             display: flex;
@@ -51,18 +52,20 @@
             font-size: 14px;
             font-weight: 500;
             align-items: center;
+            border-radius: 5px;
             box-shadow: 0px 0px 5px 1px rgb(225, 225, 225);
             background-color: #ffffff;
 
             .yearSelect {
                 display: flex;
+                padding-top: 5px;
                 height: 30px;
                 border-radius: 5px;
                 line-height: 30px;
                 font-weight: 500;
 
                 .text {
-                    flex: 3;
+                    flex: 2;
                     margin-left: 10px;
                     font-size: 18px;
 
@@ -85,7 +88,7 @@
 
                 .pay {
                     flex: 2;
-
+                    margin-right: 10px;
                     .type {
                         margin-right: 5px;
                         font-size: 12px;
@@ -99,7 +102,7 @@
 
                 .income {
                     flex: 2;
-
+                    margin-right: 10px;
                     .type {
                         margin-right: 5px;
                         font-size: 12px;
@@ -108,20 +111,6 @@
                     .money {
                         font-size: 17px;
                         color: var(--ka-text-color);
-                    }
-                }
-
-                .balance {
-                    flex: 2;
-
-                    .type {
-                        margin-right: 5px;
-                        font-size: 12px;
-                        color: var(--ka-text-color);
-                    }
-                    .money {
-                        font-size: 15px;
-                        font-size: 17px;
                     }
                 }
             }
@@ -139,5 +128,23 @@
                 }
             }
         }
+
+        .overview {
+            margin-top: 10px;
+        }
+    }
+}
+
+.userOption {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 7.5vh;
+    height: 35vh;
+
+    input {
+        border-bottom: 1px solid grey;
     }
 }

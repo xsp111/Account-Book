@@ -1,4 +1,4 @@
-import { DatePicker, NavBar } from "antd-mobile";
+import { DatePicker, NavBar, Empty } from "antd-mobile";
 import './index.scss'
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
@@ -46,7 +46,11 @@ export default function Month(){
     function handleOnConfirm(date){
         const formatDate = dayjs(date).format('YYYY | M');
         setCurrentDate(formatDate);
-        setMonthList(monthGroup[formatDate]);
+        if(monthGroup[formatDate]){
+            setMonthList(monthGroup[formatDate]);
+        }else{
+            setMonthList([]);
+        }
         setDateVisible(false);
     }
 
@@ -59,6 +63,8 @@ export default function Month(){
             groupDay
         };
     }, [monthList]);
+    console.log(monthList);
+    console.log(dayGroup);
 
     return (
         <div className="monthlyBill">
@@ -103,11 +109,17 @@ export default function Month(){
                 </div>
 
                 {/* 单日列表统计 */}
-                {
-                    dayGroup.keys.map( item => {
-                        return <DailyBill key={item} date={item} billList={dayGroup.groupDay[item]} />
-                    })
-                }
+                { ( _.isEqual(monthList, []) ) ? (
+                    <Empty
+                    style={{ marginTop: 100 }}
+                    imageStyle={{ width: 128 }}
+                    description='暂无记账'
+                    />
+                ):(
+                        dayGroup.keys.map( item => {
+                            return <DailyBill key={item} date={item} billList={dayGroup.groupDay[item]} />
+                        })
+                )}
             </div>
         </div>
     );

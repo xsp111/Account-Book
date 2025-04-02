@@ -1,4 +1,4 @@
-import { DatePicker, NavBar, Avatar } from 'antd-mobile';
+import { DatePicker, NavBar, Avatar, Popup, Input } from 'antd-mobile';
 import './index.scss';
 import { BarChart, Bar, ResponsiveContainer, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 import { useSelector } from 'react-redux';
@@ -7,17 +7,18 @@ import _ from 'lodash';
 import dayjs from 'dayjs';
 import { addTypeToBills } from '../Month/components/DayBill/billTypeTranform';
 import CategoryPieCharts from './components/PieChart';
-
+import MonthlyBill from './components/MonthlyBill';
 
   
 
 export default function Year(){
     const billList = useSelector(state => state.bill.billList);
-    const [currentYear, setCurrentYear] = useState(dayjs(new Date()).format('YYYY'));
+    const [ input, setInput ] = useState('用户名');
+    const [ userOptionVisible, setUserOptionVisible] = useState(false);
+    const [ currentYear, setCurrentYear ] = useState(dayjs(new Date()).format('YYYY'));
     const [ yearList, setYearList ] = useState([]);
     const [ yearSelect, setYearSelect ] = useState(false);
 
-    console.log(yearList);
     // 计算年度收支结余
     const yearResult = useMemo(() => {
         const pay = yearList.filter(item => item.type === 'pay').reduce((sum, item) => sum += item.money, 0);
@@ -56,17 +57,19 @@ export default function Year(){
             return {
                 month: month,
                 pay: -pay,
-                income
+                income,
+                total: pay + income,
             } ;
         });
     }, [yearList]);
+
 
     // 扇形图数据列表： 年份账单列表按类型分组，并计算每个类型的支出和收入
     function sumByCategoryType(bills){
         const result = { pay: {}, income: {} };
         bills.forEach(bill => {
           const group = bill.type === 'pay' ? 'pay' : 'income';
-          const categoryType = bill.categoryType || '未分类';
+          const categoryType = bill.categoryType;
         if (result[group][categoryType]) {
             result[group][categoryType] += bill.money;
         } else {
@@ -77,7 +80,7 @@ export default function Year(){
           pay: Object.entries(result.pay).map(([type, money]) => ({ type, money })),
           income: Object.entries(result.income).map(([type, money]) => ({ type, money }))
         };
-    };
+    }
     const typeList = useMemo(() => {
         return sumByCategoryType(addTypeToBills(yearList));
     }, [yearList]);
@@ -91,16 +94,51 @@ export default function Year(){
 
     return (
         <div className='person'>
-            <NavBar className="nav" backArrow={true}>
+            <NavBar className="nav" backArrow={false}>
                             总览
             </NavBar>
             <div className='content'>
-                <header className='user'>
+                <header 
+                    className='user'
+                    onClick={() => {
+                        setUserOptionVisible(true)
+                    }}
+                >
                     <Avatar 
-                        src='' 
+                        src='@/images/user_pic.png' 
                         style={{ '--size': '48px' }}
                     />
                     <span className='username'>用户名</span>
+                    <Popup
+                        visible={userOptionVisible}
+                        onMaskClick={() => {
+                            setUserOptionVisible(false)
+                        }}
+                        bodyStyle={{
+                            borderTopLeftRadius: '8px',
+                            borderTopRightRadius: '8px',
+                            minHeight: '35vh',
+                        }}
+                    >
+                        <div className='userOption'>
+                            <Avatar 
+                                src='@/images/user_pic.png' 
+                                style={{ '--size': '8vh' }}
+                            />
+                            <Input
+                                placeholder='请输入昵称'
+                                value={input}
+                                onChange={val => {
+                                    setInput(val);
+                                }}
+                                clearable
+                                style={{
+                                    '--font-size': "21px", 
+                                    '--text-align': 'center'
+                                }}
+                            />
+                        </div>
+                    </Popup>
                 </header>
                 <div className='yearBill'>
                     <div className='yearSelect'>
@@ -117,10 +155,6 @@ export default function Year(){
                         <div className="income">
                             <span className="type">收入</span>
                             <span className="money">{yearResult.income}</span>
-                        </div>
-                        <div className="balance">
-                            <span className="type">结余</span>
-                            <span className="money">{yearResult.total}</span>
                         </div>
                         <DatePicker
                             className="kaDate"
@@ -151,10 +185,14 @@ export default function Year(){
                             <CategoryPieCharts data={typeList} />
                         </ResponsiveContainer>
                     </div>
-                    <div className='overview'>
-                        {/* 每月预览 */}
-
-                    </div>
+                </div>
+                <div className='overview'>
+                    {/* 每月预览 */}
+                    {
+                        monthsList.map( item => {
+                            return <MonthlyBill key={item.month} data={item} />
+                        })
+                    }
                 </div>
             </div>
         </div>

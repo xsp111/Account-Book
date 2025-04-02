@@ -1,5 +1,5 @@
 import { getBillList } from "@/store/modules/billStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { TabBar } from "antd-mobile";
@@ -29,6 +29,7 @@ const tabs = [
   ]
 
 export default function Layout(){
+    const [activeKey, setActiveKey] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ export default function Layout(){
     }, [dispatch]);
 
     function switchRoute(path){
+        setActiveKey(path);
         navigate(path);
     }
 
@@ -46,7 +48,10 @@ export default function Layout(){
                 <Outlet />
             </div>
             <div className="footer">
-                <TabBar onChange={switchRoute}>
+                <TabBar 
+                    onChange={switchRoute}
+                    activeKey={activeKey}
+                >
                     {tabs.map(item => (
                         <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
                     ))}
